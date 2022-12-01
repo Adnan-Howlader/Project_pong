@@ -2,10 +2,16 @@ import pygame
 from pygame import gfxdraw
 import Line as line
 ##player 1 line info
-px1=6
-py1=2
-px2=6
-py2=100
+p1x1=6
+p1y1=2
+p1x2=6
+p1y2=100
+
+##player 2 line info
+p2x1=694
+p2y1=2
+p2x2=694
+p2y2=500
 
 
 
@@ -114,16 +120,27 @@ while carryOn:
     ##draw player line
     
     
-    draw_player1_line(px1,py1,px2,py2)
+    draw_player1_line(p1x1,p1y1,p1x2,p1y2)
+    draw_player2_line(p2x1,p2y1,p2x2,p2y2)
 
     ##if player 1 press up
     if event.type==pygame.KEYDOWN:
-        if event.key==pygame.K_UP and py1>0:
-            py1=py1-2
-            py2=py2-2
-        if event.key==pygame.K_DOWN and py2<500:
-            py1=py1+2
-            py2=py2+2
+        if event.key==pygame.K_UP and p1y1>0:
+            p1y1=p1y1-2
+            p1y2=p1y2-2
+        if event.key==pygame.K_DOWN and p1y2<500:
+            p1y1=p1y1+2
+            p1y2=p1y2+2
+    
+    ##if player 2 press up
+    if event.type==pygame.KEYDOWN:
+        if event.key==pygame.K_w and py3>0:
+            p2y3=p2y3-2
+            p24=p2y4-2
+        if event.key==pygame.K_s and py4<500:
+            p2y3=p2y3+2
+            p2y4=p2y4+2
+    
     
   
   
