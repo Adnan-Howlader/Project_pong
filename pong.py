@@ -248,11 +248,7 @@ while carryOn:
         vx=-vx
         vy=vy
         
-    ##if ball hit the player 2 line
-    if (p2y1<=cy<=p2y2 and cx+cr<=695):
-        vx=-vx
-        vy=vy
-        
+   
  
       
 
