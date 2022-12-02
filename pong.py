@@ -1,6 +1,7 @@
 import pygame
 from pygame import gfxdraw
 import Line as line
+import numpy as np
 ##player 1 line info
 p1x1=6
 p1y1=2
@@ -126,8 +127,18 @@ while carryOn:
     ##if player 1 press up
     if event.type==pygame.KEYDOWN:
         if event.key==pygame.K_UP and p1y1>0:
-            p1y1=p1y1-2
-            p1y2=p1y2-2
+
+            translation_matrix=np.array([[1,0,-2],[0,1,-2],[0,0,1]])
+            coordinate_matrix=np.array([[p1y1],[p1y2],[1]])
+            
+            result=np.matmul(translation_matrix,coordinate_matrix)
+
+            p1y1=result[0][0]
+            p1y2=result[1][0]
+            
+            
+           
+           
         if event.key==pygame.K_DOWN and p1y2<500:
             p1y1=p1y1+2
             p1y2=p1y2+2
@@ -135,8 +146,15 @@ while carryOn:
     ##if player 2 press up
     if event.type==pygame.KEYDOWN:
         if event.key==pygame.K_w and py3>0:
-            p2y3=p2y3-2
-            p24=p2y4-2
+            ##USE 3D translation matrix using numpy array
+           pass
+
+
+
+
+
+
+            
         if event.key==pygame.K_s and py4<500:
             p2y3=p2y3+2
             p2y4=p2y4+2
