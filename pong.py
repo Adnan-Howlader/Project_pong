@@ -16,6 +16,14 @@ p2x2=694
 p2y2=100
 up=False
 
+##circle info
+cx=60
+cy=60
+cr=10
+vx=2
+vy=2
+
+
 
 
 ##draw pixel function
@@ -146,9 +154,9 @@ while carryOn:
     
     
     ##apply middle point algorithm
-    draw_middle_line()
+    draw_middle_line() 
 
-    ##draw player line
+    ##draw players line
     
     
     draw_player1_line(p1x1,p1y1,p1x2,p1y2)
@@ -158,7 +166,7 @@ while carryOn:
     if event.type==pygame.KEYDOWN:
         if event.key==pygame.K_UP and p1y1>0:
 
-            translation_matrix=np.array([[1,0,-2],[0,1,-2],[0,0,1]])
+            translation_matrix=np.array([[1,0,-3],[0,1,-3],[0,0,1]])
             coordinate_matrix=np.array([[p1y1],[p1y2],[1]])
             
             result=np.matmul(translation_matrix,coordinate_matrix)
@@ -172,7 +180,7 @@ while carryOn:
         if event.key==pygame.K_DOWN and p1y2<500:
 
 
-            translation_matrix=np.array([[1,0,2],[0,1,2],[0,0,1]])
+            translation_matrix=np.array([[1,0,3],[0,1,3],[0,0,1]])
             coordinate_matrix=np.array([[p1y1],[p1y2],[1]])
             
             result=np.matmul(translation_matrix,coordinate_matrix)
@@ -182,12 +190,12 @@ while carryOn:
             
      ##computer ai
 
-   
+    
     if p2y1 <= 0: 
       up=False
     if p2y2 >= 500:
       up=True
-    
+    ##if up is true move up else move down
     if up==False:
       translation_matrix=np.array([[1,0,3],[0,1,3],[0,0,1]])
       coordinate_matrix=np.array([[p2y1],[p2y2],[1]])
@@ -204,9 +212,53 @@ while carryOn:
 
       p2y1=result[0][0]
       p2y2=result[1][0]
-    ##draw circle
 
-    midpoint(50, 50, 20)
+
+    ##draw circle ##initial stage
+    
+    midpoint(cx, cy, cr)
+    circle_translation_matrix=np.array([[1,0,vx],[0,1,vy],[0,0,1]])
+    circle_coordinate_matrix=np.array([[cx],[cy],[1]])
+    result=np.matmul(circle_translation_matrix,circle_coordinate_matrix)
+    cx=result[0][0]
+    cy=result[1][0]
+
+    ##if ball hit the ground
+    if cy+cr>=500:
+        vy=-vy
+        vx=vx
+    ##if ball hit the ceiling
+    if cy+cr<=0:
+        vy=-vy
+        vx=vx
+       
+    ##if ball hit the left wall
+    if cx+cr<=0 :
+        vx=-vx
+        vy=vy
+    ##if ball hit the right wall
+    if cx+cr>=700:
+        vx=-vx
+        vy=vy
+
+
+    ##if ball hit the player 1 line
+    if (p1y1<=cy<=p1y2 and cx+cr<=23):
+
+        vx=-vx
+        vy=vy
+        
+    ##if ball hit the player 2 line
+    if (p2y1<=cy<=p2y2 and cx+cr<=695):
+        vx=-vx
+        vy=vy
+        
+ 
+      
+
+
+
+
 
 
 
