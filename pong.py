@@ -10,9 +10,10 @@ p1y2=100
 
 ##player 2 line info
 p2x1=694
-p2y1=2
+p2y1=0
 p2x2=694
-p2y2=500
+p2y2=100
+up=False
 
 
 
@@ -140,14 +141,51 @@ while carryOn:
            
            
         if event.key==pygame.K_DOWN and p1y2<500:
-            p1y1=p1y1+2
-            p1y2=p1y2+2
+
+
+            translation_matrix=np.array([[1,0,2],[0,1,2],[0,0,1]])
+            coordinate_matrix=np.array([[p1y1],[p1y2],[1]])
+            
+            result=np.matmul(translation_matrix,coordinate_matrix)
+
+            p1y1=result[0][0]
+            p1y2=result[1][0]
+            
+     ##computer ai
+
+   
+    if p2y1 <= 0: 
+      up=False
+    if p2y2 >= 500:
+      up=True
     
-    ##if player 2 press up
-    if event.type==pygame.KEYDOWN:
-        if event.key==pygame.K_w and py3>0:
-            ##USE 3D translation matrix using numpy array
-           pass
+    if up==False:
+      translation_matrix=np.array([[1,0,3],[0,1,3],[0,0,1]])
+      coordinate_matrix=np.array([[p2y1],[p2y2],[1]])
+            
+      result=np.matmul(translation_matrix,coordinate_matrix)
+
+      p2y1=result[0][0]
+      p2y2=result[1][0]
+    else:
+      translation_matrix=np.array([[1,0,-3],[0,1,-3],[0,0,1]])
+      coordinate_matrix=np.array([[p2y1],[p2y2],[1]])
+            
+      result=np.matmul(translation_matrix,coordinate_matrix)
+
+      p2y1=result[0][0]
+      p2y2=result[1][0]
+
+
+
+     
+    
+ 
+    
+    
+           
+  
+      
 
 
 
@@ -155,10 +193,8 @@ while carryOn:
 
 
             
-        if event.key==pygame.K_s and py4<500:
-            p2y3=p2y3+2
-            p2y4=p2y4+2
-    
+     
+            
     
   
   
