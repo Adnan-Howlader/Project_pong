@@ -2,6 +2,7 @@ import pygame
 from pygame import gfxdraw
 import Line as line
 import numpy as np
+
 ##player 1 line info
 p1x1=6
 p1y1=2
@@ -20,6 +21,34 @@ up=False
 ##draw pixel function
 def drawPixel(x, y):
     pygame.gfxdraw.pixel(screen, x, y, (255, 255, 255))
+
+##circle functions
+def midpoint(x0, y0, radius):
+    d = 1-radius
+    x = 0
+    y = radius 
+    zone_Conversion(x, y, x0, y0)
+    while x < y:
+        if d >= 0: 
+            d = d + 2 * x - 2 * y + 5
+            x = x + 1
+            y = y - 1
+        else:
+            d = d + 2 * x + 3
+            x = x + 1
+        zone_Conversion(x, y, x0, y0)
+
+
+
+def zone_Conversion(x, y, x0, y0):
+    drawPixel(x + x0,y + y0)
+    drawPixel(y + x0, x + y0)
+    drawPixel(y + x0, -x + y0)
+    drawPixel(x + x0, -y + y0)
+    drawPixel(-x + x0, -y + y0)
+    drawPixel(-y + x0, -x + y0)
+    drawPixel(-y + x0, x + y0)
+    drawPixel(-x + x0, y + y0)
 
 
 def draw_middle_line():
@@ -175,6 +204,9 @@ while carryOn:
 
       p2y1=result[0][0]
       p2y2=result[1][0]
+    ##draw circle
+
+    midpoint(50, 50, 20)
 
 
 
