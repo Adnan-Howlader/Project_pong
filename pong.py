@@ -238,12 +238,17 @@ while carryOn:
         vx=-vx
         vy=vy
         player_2_score+=1
+        ##play sound
+        pygame.mixer.music.load("sound.mp3")
+        pygame.mixer.music.play()
      
     ##if ball hit the right wall
     if cx+cr>=700:
         vx=-vx
         vy=vy
         player_1_score+=1
+        pygame.mixer.music.load("sound.mp3")
+        pygame.mixer.music.play()
         
 
 
