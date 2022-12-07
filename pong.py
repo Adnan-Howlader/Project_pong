@@ -4,24 +4,25 @@ import Line as line
 import numpy as np
 
 ##player 1 line info
-p1x1=6
+p1x1=10
 p1y1=2
-p1x2=6
+p1x2=10
 p1y2=100
-
+player_1_score=0
 ##player 2 line info
 p2x1=694
-p2y1=0
+p2y1=2
 p2x2=694
 p2y2=100
 up=False
+player_2_score=0
 
 ##circle info
 cx=60
 cy=60
 cr=10
-vx=2
-vy=2
+vx=3
+vy=3
 
 
 
@@ -236,49 +237,649 @@ while carryOn:
     if cx+cr<=0 :
         vx=-vx
         vy=vy
+        player_2_score+=1
+     
     ##if ball hit the right wall
     if cx+cr>=700:
         vx=-vx
         vy=vy
+        player_1_score+=1
+        
 
 
     ##if ball hit the player 1 line
-    if (p1y1<=cy<=p1y2 and cx+cr<=23):
+    if (cx+cr<=23 and p1y1<=cy<=p1y2 ):
 
         vx=-vx
         vy=vy
-        
+    ##if ball hit player 2 line
+    if ( cx+cr>=693 and p2y1<=cy<=p2y2 ):
+      vx=-vx
+      vy=vy
+     
+    
+    if player_1_score==5:
+      player_1_score=0
+      player_2_score=0
+      
+      
+      print("Congratualations You win")
+      
+    if player_2_score==5:
+      player_2_score=0
+      player_1_score=0
+      
+
+      print("You lose")
+
+
+
+    ###Number Drawing Code
+    def find_zone(dx, dy):
+          if abs(dx) <= abs(dy):
+              if dx >= 0 and dy >= 0:
+                  return 1
+              elif dx <= 0 and dy >= 0:
+                  return 2
+              elif dx >= 0 and dy <= 0:
+                  return 6
+              elif dx <= 0 and dy <= 0:
+                  return 5
+          else:
+              if dx >= 0 and dy >= 0:
+                  return 0
+              elif dx <= 0 and dy >= 0:
+                  return 3
+              elif dx >= 0 and dy <= 0:
+                  return 7
+              elif dx <= 0 and dy <= 0:
+                  return 4
+
+    def convert_to_zone0(z, x, y):
    
- 
-      
+        if z==0:
 
+            return x, y
+        elif z==1:
+            return y, x
+        elif z==2:
+            return y, -x
+        elif z==3:
+            return -x, y
+        elif z==4:
+            return -x, -y
+        elif z==5:
+            return -y, -x
+        elif z==6:
+            return -y, x
+        elif z==7:
+            return x, -y
 
+    def convert_original(z, x, y):
+        if z==0:
+            return x, y
+        elif z==1:
+            return y, x
+        elif z==2:
+            return -y, x
+        elif z==3:
+            return -x, y
+        elif z==4:
+            return -x, -y
+        elif z==5:
+            return -y, -x
+        elif z==6:
+            return y, -x
+        elif z==7:
+            return x, -y
 
-
-
-
-
-     
-    
- 
-    
-    
+    def midPoint(X1,Y1,X2,Y2):
+          # calculate dx & dy
+          dx = X2 - X1
+          dy = Y2 - Y1
+          points=[]
+       
+          # initial value of decision parameter d
+          d = dy - (dx/2)
+          x = X1
+          y = Y1
+       
+          # Plot initial given point
+          # putpixel(x,y) can be used to print pixel
+          # of line in graphics
+         
+          # iterate through value of X
+          while (x < X2):
+              x=x+1
+              # E or East is chosen
+              if(d <= 0):
+                  d = d + dy
+       
+              # NE or North East is chosen
+              else:
+                  d = d + (dy - dx)
+                  y=y+1
            
+       
+              # Plot intermediate points
+              # putpixel(x,y) is used to print pixel
+              # of line in graphics
+              points.append((x,y))
+          return points
+
+    
+    
+    def first_num_left_right_first_line():
+        ##first find the zone
+         x1=-100+300
+         x2=0+300
+         y1=200
+         y2=200
+         dx=x2-x1
+         dy=y2-y1
+         z=find_zone(dx,dy)
+        
+           ##convert to zone 0
+         x1,y1=convert_to_zone0(z,x1,y1)
+         x2,y2=convert_to_zone0(z,x2,y2)
+             
+      
+         point=midPoint(x1,y1,x2,y2)
+      
+         for x,y in point:
+      
+           x,y=convert_original(z,x,y)
+           drawPixel(x,y)
+            
+             
+      
+        
+       
+      
+    def first_num_up_down_right_side():
+        x1=0+300
+        y1=200
+      
+        x2=0+300
+        y2=130
+      
+        dx=x2-x1
+        dy=y2-y1
+        z=find_zone(dx,dy)
+        
+           ##convert to zone 0
+        x1,y1=convert_to_zone0(z,x1,y1)
+        x2,y2=convert_to_zone0(z,x2,y2)
+             
+      
+        point=midPoint(x1,y1,x2,y2)
+      
+        for x,y in point:
+      
+           x,y=convert_original(z,x,y)
+           drawPixel(x,y)
+      
+      
+    def first_num_left_right_second_line():
+        ##first find the zone
+         x1=-100+300
+         x2=0+300
+         y1=130
+         y2=130
+         dx=x2-x1
+         dy=y2-y1
+         z=find_zone(dx,dy)
+        
+           ##convert to zone 0
+         x1,y1=convert_to_zone0(z,x1,y1)
+         x2,y2=convert_to_zone0(z,x2,y2)
+             
+      
+         point=midPoint(x1,y1,x2,y2)
+      
+         for x,y in point:
+      
+           x,y=convert_original(z,x,y)
+           drawPixel(x,y)
+      
+      
+    def first_num_up_down_left_side():
+        x1=-100+300
+        y1=200
+      
+        x2=-100+300
+        y2=130
+      
+        dx=x2-x1
+        dy=y2-y1
+        z=find_zone(dx,dy)
+        
+           ##convert to zone 0
+        x1,y1=convert_to_zone0(z,x1,y1)
+        x2,y2=convert_to_zone0(z,x2,y2)
+             
+      
+        point=midPoint(x1,y1,x2,y2)
+      
+        for x,y in point:
+      
+           x,y=convert_original(z,x,y)
+           drawPixel(x,y)
+      
+      
+    def first_num_up_down_left_side2():
+        x1=-100+300
+        y1=130
+      
+        x2=-100+300
+        y2=60
+      
+        dx=x2-x1
+        dy=y2-y1
+        z=find_zone(dx,dy)
+        
+           ##convert to zone 0
+        x1,y1=convert_to_zone0(z,x1,y1)
+        x2,y2=convert_to_zone0(z,x2,y2)
+             
+      
+        point=midPoint(x1,y1,x2,y2)
+      
+        for x,y in point:
+      
+           x,y=convert_original(z,x,y)
+           drawPixel(x,y)
+      
+      
+      
+      
+    def first_num_up_down_right_side2():
+        x1=0+300
+        y1=130
+      
+        x2=0+300
+        y2=60
+      
+        dx=x2-x1
+        dy=y2-y1
+        z=find_zone(dx,dy)
+        
+           ##convert to zone 0
+        x1,y1=convert_to_zone0(z,x1,y1)
+        x2,y2=convert_to_zone0(z,x2,y2)
+             
+      
+        point=midPoint(x1,y1,x2,y2)
+      
+        for x,y in point:
+      
+           x,y=convert_original(z,x,y)
+           drawPixel(x,y)
+      
+      
+    def first_num_left_right_3rd_line():
+      ##first find the zone
+       x1=-100+300
+       x2=0+300
+       y1=60
+       y2=60
+       dx=x2-x1
+       dy=y2-y1
+       z=find_zone(dx,dy)
+      
+         ##convert to zone 0
+       x1,y1=convert_to_zone0(z,x1,y1)
+       x2,y2=convert_to_zone0(z,x2,y2)
+           
+    
+       point=midPoint(x1,y1,x2,y2)
+    
+       for x,y in point:
+    
+         x,y=convert_original(z,x,y)
+         drawPixel(x,y)
+    
+       
+    
+    
+    
+    
+    
+    
+    
+    ##second number mid point algo
+         
+    def second_num_left_right_first_line():
+      ##first find the zone
+       x1=100+350
+       x2=200+350
+       y1=200
+       y2=200
+       dx=x2-x1
+       dy=y2-y1
+       z=find_zone(dx,dy)
+      
+         ##convert to zone 0
+       x1,y1=convert_to_zone0(z,x1,y1)
+       x2,y2=convert_to_zone0(z,x2,y2)
+           
+    
+       point=midPoint(x1,y1,x2,y2)
+    
+       for x,y in point:
+    
+         x,y=convert_original(z,x,y)
+         drawPixel(x,y)
+          
+           
+    
+      
+     
+    
+    def second_num_up_down_right_side():
+      x1=200+350
+      y1=200
+    
+      x2=200+350
+      y2=130
+    
+      dx=x2-x1
+      dy=y2-y1
+      z=find_zone(dx,dy)
+      
+         ##convert to zone 0
+      x1,y1=convert_to_zone0(z,x1,y1)
+      x2,y2=convert_to_zone0(z,x2,y2)
+           
+    
+      point=midPoint(x1,y1,x2,y2)
+    
+      for x,y in point:
+    
+         x,y=convert_original(z,x,y)
+         drawPixel(x,y)
+    
+    
+    def second_num_left_right_second_line():
+      ##first find the zone
+       x1=100+350
+       x2=200+350
+       y1=130
+       y2=130
+       dx=x2-x1
+       dy=y2-y1
+       z=find_zone(dx,dy)
+      
+         ##convert to zone 0
+       x1,y1=convert_to_zone0(z,x1,y1)
+       x2,y2=convert_to_zone0(z,x2,y2)
+           
+    
+       point=midPoint(x1,y1,x2,y2)
+    
+       for x,y in point:
+    
+         x,y=convert_original(z,x,y)
+         drawPixel(x,y)
+    
+    
+    def second_num_up_down_left_side():
+      x1=100+350
+      y1=200
+    
+      x2=100+350
+      y2=130
+    
+      dx=x2-x1
+      dy=y2-y1
+      z=find_zone(dx,dy)
+      
+         ##convert to zone 0
+      x1,y1=convert_to_zone0(z,x1,y1)
+      x2,y2=convert_to_zone0(z,x2,y2)
+           
+    
+      point=midPoint(x1,y1,x2,y2)
+    
+      for x,y in point:
+    
+         x,y=convert_original(z,x,y)
+         drawPixel(x,y)
+    
+    
+    def second_num_up_down_left_side2():
+      x1=100+350
+      y1=130
+    
+      x2=100+350
+      y2=60
+    
+      dx=x2-x1
+      dy=y2-y1
+      z=find_zone(dx,dy)
+      
+         ##convert to zone 0
+      x1,y1=convert_to_zone0(z,x1,y1)
+      x2,y2=convert_to_zone0(z,x2,y2)
+           
+    
+      point=midPoint(x1,y1,x2,y2)
+    
+      for x,y in point:
+    
+         x,y=convert_original(z,x,y)
+         drawPixel(x,y)
+    
+    
+    
+    
+    def second_num_up_down_right_side2():
+      x1=200+350
+      y1=130
+    
+      x2=200+350
+      y2=60
+    
+      dx=x2-x1
+      dy=y2-y1
+      z=find_zone(dx,dy)
+      
+         ##convert to zone 0
+      x1,y1=convert_to_zone0(z,x1,y1)
+      x2,y2=convert_to_zone0(z,x2,y2)
+           
+    
+      point=midPoint(x1,y1,x2,y2)
+    
+      for x,y in point:
+    
+         x,y=convert_original(z,x,y)
+         drawPixel(x,y)
+    
+    
+    def second_num_left_right_3rd_line():
+      ##first find the zone
+       x1=100+350
+       x2=200+350
+       y1=60
+       y2=60
+       dx=x2-x1
+       dy=y2-y1
+       z=find_zone(dx,dy)
+      
+         ##convert to zone 0
+       x1,y1=convert_to_zone0(z,x1,y1)
+       x2,y2=convert_to_zone0(z,x2,y2)
+           
+    
+       point=midPoint(x1,y1,x2,y2)
+    
+       for x,y in point:
+    
+         x,y=convert_original(z,x,y)
+         drawPixel(x,y)
+
+    
   
       
 
 
 
 
+  
+      
+ 
 
-
-            
-     
-            
     
-  
+
+
+
+
+
+
+
+   
   
 
+  
+  
+         
+
+    
+
+
+
+
+
+
+          
+   
+          
+  
+
+
+
+    def draw_first(n):
+        if n==0:
+             
+              first_num_left_right_first_line()
+              first_num_up_down_right_side()
+              
+              first_num_up_down_left_side()
+              first_num_up_down_left_side2()
+              first_num_up_down_right_side2()
+              first_num_left_right_3rd_line()
+        elif n==1:
+              
+              first_num_up_down_right_side()
+             
+              
+              first_num_up_down_right_side2()
+        
+        elif n==5:
+    
+              first_num_left_right_first_line()
+              first_num_up_down_right_side()
+              first_num_left_right_second_line()
+              
+              first_num_up_down_left_side2()
+              
+              first_num_left_right_3rd_line()
+    
+        
+        elif n==3:
+          first_num_left_right_first_line()
+          first_num_up_down_right_side()
+          first_num_left_right_second_line()
+         
+          
+          first_num_up_down_right_side2()
+          first_num_left_right_3rd_line()
+        elif n==4:
+    
+              
+              first_num_up_down_right_side()
+              first_num_left_right_second_line()
+              first_num_up_down_left_side2()
+             
+              first_num_up_down_right_side2()
+        elif n==2:
+              first_num_left_right_first_line()
+              
+              first_num_left_right_second_line()
+              first_num_up_down_left_side()
+              
+              first_num_up_down_right_side2()
+              first_num_left_right_3rd_line()
+        
+             
+         
+      
+    def draw_last(n):
+      if n==0:
+           
+            second_num_left_right_first_line()
+            second_num_up_down_right_side()
+            
+            second_num_up_down_left_side()
+            second_num_up_down_left_side2()
+            second_num_up_down_right_side2()
+            second_num_left_right_3rd_line()
+      elif n==1:
+            
+            second_num_up_down_right_side()
+           
+            
+            second_num_up_down_right_side2()
+      
+      elif n==5:
+  
+            second_num_left_right_first_line()
+            second_num_up_down_right_side()
+            second_num_left_right_second_line()
+            
+            second_num_up_down_left_side2()
+            
+            second_num_left_right_3rd_line()
+  
+      
+      elif n==3:
+        second_num_left_right_first_line()
+        second_num_up_down_right_side()
+        second_num_left_right_second_line()
+       
+        
+        second_num_up_down_right_side2()
+        second_num_left_right_3rd_line()
+      elif n==4:
+  
+            
+            second_num_up_down_right_side()
+            second_num_left_right_second_line()
+            second_num_up_down_left_side2()
+           
+            second_num_up_down_right_side2()
+      elif n==2:
+            second_num_left_right_first_line()
+            
+            second_num_left_right_second_line()
+            second_num_up_down_left_side()
+            
+            second_num_up_down_right_side2()
+            second_num_left_right_3rd_line()
+      
+           
+       
+  
+
+    draw_first(player_1_score)
+    draw_last(player_2_score)
+  
+   
+      
+  
+      
+      
     pygame.display.flip()
 
     clock.tick(60)
